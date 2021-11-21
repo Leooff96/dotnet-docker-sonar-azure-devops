@@ -15,7 +15,8 @@ stages:
     steps:
 
     - bash: |
-        docker build -t example:$(Build.SourceVersion) --build-arg SONAR_TOKEN="$(SONAR_TOKEN)" .
+        SONARQUBE_SCANNER_PARAMS=$(< sonar-project.json)
+        docker build -t example:$(Build.SourceVersion) --build-arg SONAR_TOKEN="$(SONAR_TOKEN)" --build-arg SONARQUBE_SCANNER_PARAMS="$SONARQUBE_SCANNER_PARAMS" .
       failOnStderr: true
       displayName: 'docker build'
 
