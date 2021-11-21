@@ -13,8 +13,9 @@ stages:
     variables:
     - group: LB-SonarCloud
     steps:
+
     - bash: |
-        docker build -t example:$(Build.SourceVersion) --build-arg SONAR_TOKEN="$(SONAR_TOKEN)" 
+        docker build -t example:$(Build.SourceVersion) --build-arg SONAR_TOKEN="$(SONAR_TOKEN)" .
       failOnStderr: true
       displayName: 'docker build'
 
