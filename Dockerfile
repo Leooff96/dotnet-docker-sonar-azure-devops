@@ -41,7 +41,7 @@ WORKDIR "/src/ExampleApi"
 RUN dotnet build "Example.Api.csproj" -c Release -o /app/build
 
 ## Run Tests
-RUN dotnet test src/Example.Api.Tests/*.Tests.csproj --logger "trx;LogFileName=testresults.trx" --collect:"XPlat Code Coverage" --results-directory "/TestResults/"
+RUN dotnet test ./Example.Api.Tests/*.Tests.csproj --logger "trx;LogFileName=testresults.trx" --collect:"XPlat Code Coverage" --results-directory "/TestResults/"
 
 ## Run Generate Report
 RUN reportgenerator "-reports:/TestResults/*/coverage.cobertura.xml" "-targetdir:/TestResults/coverage" "-reporttypes:SonarQube"
