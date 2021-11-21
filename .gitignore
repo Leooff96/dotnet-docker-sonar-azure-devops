@@ -1,0 +1,11 @@
+*.suo
+*.user
+*.Publish.xml
+.vs
+Thumbs.db
+Desktop.ini
+Logs
+TestResults
+bin
+obj
+packages

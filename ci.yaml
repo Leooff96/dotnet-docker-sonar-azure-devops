@@ -1,0 +1,38 @@
+name: $(date:yyyyMMdd)$(rev:.r)
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: CI_BUILD_DOCKER
+  jobs:
+  - job: CI_BUILD_DOCKER
+    variables:
+    - group: LB-SonarCloud
+    steps:
+    - bash: |
+        docker build -t example:$(Build.SourceVersion) --build-arg SONAR_TOKEN="$(SONAR_TOKEN)" 
+      failOnStderr: true
+      displayName: 'docker build'
+
+    - bash: |
+        id=`docker images --filter "label=artifacts=true" -q | head -1`
+        docker create --name TestResults $id
+        docker cp TestResults:/TestResults ./TestResults/
+        docker rm TestResults
+      displayName: 'Copy test results'
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '**/coverage.cobertura.xml'
+
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: VSTest
+        testResultsFiles: '**/*.trx'
+        failTaskOnFailedTests: true
