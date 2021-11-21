@@ -1,0 +1,1 @@
+# dotnet-docker-sonar-azure-devops
